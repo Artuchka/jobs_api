@@ -3,6 +3,7 @@ require("express-async-errors")
 const { connectDB } = require("./database/connect")
 const { errorMiddleware } = require("./middleware/error-handler")
 const { notFoundMiddleware } = require("./middleware/notFound")
+const { authRouter } = require("./routers/auth")
 const { jobsRouter } = require("./routers/jobs")
 require("dotenv").config()
 require("express-async-errors")
@@ -14,9 +15,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 app.use("/api/jobs", jobsRouter)
+app.use("/api/jobs/auth", authRouter)
 
-app.use(notFoundMiddleware)
 app.use(errorMiddleware)
+app.use(notFoundMiddleware)
 
 const start = async () => {
 	try {
