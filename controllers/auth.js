@@ -31,18 +31,21 @@ const login = async (req, res) => {
 		)
 	}
 
-	const foundUser = Users.findOne({ username })
+	const foundUser = await Users.findOne({ username })
 	if (!foundUser) {
 		throw new CustomError(StatusCodes.UNAUTHORIZED, "invalid credentials")
 	}
 
-	const isCredentialsMatch = foundUser.checkPassword(password)
+	const isCredentialsMatch = await foundUser.checkPassword(password)
 	if (!isCredentialsMatch) {
 		throw new CustomError(StatusCodes.UNAUTHORIZED, "invalid credentials")
 	}
 
+	const token = await foundUser.getToken()
+
 	res.status(StatusCodes.OK).json({
 		msg: "welcome back!",
+		token,
 	})
 }
 
