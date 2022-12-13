@@ -1,6 +1,7 @@
 const express = require("express")
 require("express-async-errors")
 const { connectDB } = require("./database/connect")
+const { authMiddleware } = require("./middleware/auth")
 const { errorMiddleware } = require("./middleware/error-handler")
 const { notFoundMiddleware } = require("./middleware/notFound")
 const { authRouter } = require("./routers/auth")
@@ -14,8 +15,8 @@ const port = process.env.PORT || 5400
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-app.use("/api/jobs", jobsRouter)
 app.use("/api/jobs/auth", authRouter)
+app.use("/api/jobs", authMiddleware, jobsRouter)
 
 app.use(errorMiddleware)
 app.use(notFoundMiddleware)

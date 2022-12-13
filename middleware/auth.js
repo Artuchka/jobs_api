@@ -13,15 +13,9 @@ const authMiddleware = async (req, res, next) => {
 	const token = authHeader.split(" ")[1]
 
 	try {
-		const decoded = jwt.verify(token, process.env.JWT_SECRET)
-		console.log(decoded)
-		const { mongoID } = decoded
-		const foundUser = await Users.findOne({ _id: mongoID })
-		if (!foundUser) {
-			throw new CustomError(statusCodes.NOT_FOUND, "no such user found")
-		}
-		console.log(foundUser)
-		req.user = foundUser
+		const { userId } = jwt.verify(token, process.env.JWT_SECRET)
+		// we may find user in database also
+		req.user = { userId }
 	} catch (error) {
 		throw new CustomError(statusCodes.UNAUTHORIZED, "bad token")
 	}
