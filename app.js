@@ -1,3 +1,8 @@
+const cors = require("cors")
+const xss = require("xss-clean")
+const helmet = require("helmet")
+const rateLimiter = require("express-rate-limit")
+
 const express = require("express")
 require("express-async-errors")
 const { connectDB } = require("./database/connect")
@@ -11,6 +16,17 @@ require("express-async-errors")
 
 const app = express()
 const port = process.env.PORT || 5400
+
+app.set("trust proxy", 1)
+app.use(
+	rateLimiter({
+		windowMs: 5 * 60 * 1000,
+		max: 100,
+	})
+)
+app.use(cors())
+app.use(xss())
+app.use(helmet())
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
