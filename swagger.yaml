@@ -1,0 +1,231 @@
+openapi: 3.0.0
+info:
+    title: Jobs API
+    contact: {}
+    version: "1.0"
+servers:
+    - url: https://jobs-api-o3s6.onrender.com/api/
+      variables: {}
+paths:
+    /jobs:
+        get:
+            tags:
+                - Jobs
+            summary: get all jobs
+            operationId: getalljobs
+            parameters: []
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+            security:
+                - bearer: []
+        post:
+            tags:
+                - Jobs
+            summary: create job
+            operationId: createjob
+            parameters: []
+            requestBody:
+                description: ""
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: "#/components/schemas/createjobrequest"
+                                - example:
+                                      company: ""
+                                      position: react developer
+                        example:
+                            company: ""
+                            position: react developer
+                required: true
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+            security:
+                - bearer: []
+    /jobs/{jobId}:
+        parameters:
+            - in: path
+              name: jobId # Note the name is the same as in the path
+              required: true
+              schema:
+                  type: string
+                  minimum: 1
+              description: The job ID
+        patch:
+            tags:
+                - Jobs
+            summary: update job
+            operationId: updatejob
+            requestBody:
+                description: ""
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: "#/components/schemas/updatejobrequest"
+                                - example:
+                                      position: senior react dev333
+                        example:
+                            position: senior react dev333
+                required: true
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+            security:
+                - bearer: []
+        get:
+            tags:
+                - Jobs
+            summary: get job
+            operationId: getjob
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+            security:
+                - bearer: []
+        delete:
+            tags:
+                - Jobs
+            summary: delete job
+            operationId: deletejob
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+            security:
+                - bearer: []
+    /jobs/auth/login:
+        post:
+            tags:
+                - Auth
+            summary: login
+            operationId: login
+            parameters: []
+            requestBody:
+                description: ""
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: "#/components/schemas/loginrequest"
+                                - example:
+                                      username: temka
+                                      password: password
+                        example:
+                            username: temka
+                            password: password
+                required: true
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+            security: []
+    /jobs/auth/register:
+        post:
+            tags:
+                - Auth
+            summary: register
+            operationId: register
+            parameters: []
+            requestBody:
+                description: ""
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: "#/components/schemas/registerrequest"
+                                - example:
+                                      username: temka
+                                      password: password
+                                      email: newtemochka@ail.com
+                        example:
+                            username: temka
+                            password: password
+                            email: newtemochka@ail.com
+                required: true
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+            security: []
+components:
+    schemas:
+        createjobrequest:
+            title: createjobrequest
+            required:
+                - company
+                - position
+            type: object
+            properties:
+                company:
+                    type: string
+                position:
+                    type: string
+            example:
+                company: ""
+                position: react developer
+        updatejobrequest:
+            title: updatejobrequest
+            required:
+                - position
+            type: object
+            properties:
+                position:
+                    type: string
+            example:
+                position: senior react dev333
+        loginrequest:
+            title: loginrequest
+            required:
+                - username
+                - password
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+            example:
+                username: temka
+                password: password
+        registerrequest:
+            title: registerrequest
+            required:
+                - username
+                - password
+                - email
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+                email:
+                    type: string
+            example:
+                username: temka
+                password: password
+                email: newtemochka@ail.com
+    securitySchemes:
+        bearer:
+            type: http
+            scheme: bearer
+security: []
+tags:
+    - name: Jobs
+      description: ""
+    - name: Auth
+      description: ""

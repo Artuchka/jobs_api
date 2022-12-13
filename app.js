@@ -3,6 +3,10 @@ const xss = require("xss-clean")
 const helmet = require("helmet")
 const rateLimiter = require("express-rate-limit")
 
+const swagger = require("swagger-ui-express")
+const yaml = require("yamljs")
+const swaggerDocument = yaml.load("./swagger.yaml")
+
 const express = require("express")
 require("express-async-errors")
 const { connectDB } = require("./database/connect")
@@ -31,6 +35,14 @@ app.use(helmet())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
+app.get("/", (req, res) => {
+	res.send(`
+		<h1> jobs api down here </h1>	
+		<a href="/api-docs" targe="_blank"> click me </a>	
+	`)
+})
+
+app.use("/api-docs", swagger.serve, swagger.setup(swaggerDocument))
 app.use("/api/jobs/auth", authRouter)
 app.use("/api/jobs", authMiddleware, jobsRouter)
 
