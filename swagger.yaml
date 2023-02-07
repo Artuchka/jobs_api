@@ -4,7 +4,7 @@ info:
     contact: {}
     version: "1.0"
 servers:
-    - url: https://jobs-api-o3s6.onrender.com/api/
+    - url: https://talented-foal-tutu.cyclic.app/api/
       variables: {}
 paths:
     /jobs:
